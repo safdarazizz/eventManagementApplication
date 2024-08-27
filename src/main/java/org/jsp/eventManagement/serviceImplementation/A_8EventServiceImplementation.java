@@ -1,6 +1,7 @@
 package org.jsp.eventManagement.serviceImplementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,9 +103,16 @@ public class A_8EventServiceImplementation implements A_7EventService{
 
 	@Override
 	public ResponseEntity<?> fetchUpcomingEvents() {
-		List<A_2Event> eventList = eventDao.fetchUpcomingEvents();
+		List<A_2Event> eventList = eventDao.fetchAllEvents();
+		ArrayList<A_2Event> aList = new ArrayList<>();
 		
-		if(eventList.isEmpty())
+		for(A_2Event e : eventList)
+		{
+			if(e.getStatus().toString().equalsIgnoreCase("UP_COMING"))
+				aList.add(e);
+		}
+		
+		if(aList.isEmpty())
 			throw A_12NoEventFoundException.builder().message("No event present in the database table").build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(eventList).build());
