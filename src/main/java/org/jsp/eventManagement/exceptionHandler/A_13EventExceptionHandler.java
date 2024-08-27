@@ -2,6 +2,7 @@ package org.jsp.eventManagement.exceptionHandler;
 
 import org.jsp.eventManagement.exceptionClasses.A_12NoEventFoundException;
 import org.jsp.eventManagement.exceptionClasses.A_14InvalidEventIdException;
+import org.jsp.eventManagement.exceptionClasses.A_15EventNotFoundException;
 import org.jsp.eventManagement.responseStructure.A_5ResponseStructure;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +22,11 @@ public class A_13EventExceptionHandler {
 	public ResponseEntity<?> handleInvalidEventIdException(A_14InvalidEventIdException e)
 	{
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(A_5ResponseStructure.builder().status(HttpStatus.BAD_REQUEST.value()).message("Event status can not be changed").body(e.getMessage()).build());
+	}
+	
+	@ExceptionHandler(A_15EventNotFoundException.class)
+	public ResponseEntity<?> handleEventNotFoundException(A_15EventNotFoundException e)
+	{
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(A_5ResponseStructure.builder().status(HttpStatus.BAD_REQUEST.value()).message("Event status not found").body(e.getMessage()).build());
 	}
 }

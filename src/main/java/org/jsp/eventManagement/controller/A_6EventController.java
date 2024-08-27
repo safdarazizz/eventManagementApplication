@@ -64,9 +64,27 @@ public class A_6EventController {
 		return eventService.setStatusToUpcoming(id);
 	}
 	
+	@Operation(summary = "To fetch the upcoming events", description = "This API will fetch all the upcoming events from the database table")
+	@ApiResponses({@ApiResponse(responseCode = "200", description = "Fetched all the upcoming events successfully"), @ApiResponse(responseCode = "400", description = "Could not fetch the upcoming events, it may not be present")})
 	@GetMapping("/upcoming")
 	public ResponseEntity<?> fetchUpcomingEvents()
 	{
 		return eventService.fetchUpcomingEvents();
+	}
+	
+	@Operation(summary = "To fetch the ongoing events", description = "This API will fetch all the ongoing events from the database table")
+	@ApiResponses({@ApiResponse(responseCode = "200", description = "Fetched all the ongoing events successfully"), @ApiResponse(responseCode = "400", description = "Could not fetch the ongoing events, it may not be present")})
+	@GetMapping("/ongoing")
+	public ResponseEntity<?> fetchOngoingEvents()
+	{
+		return eventService.fetchOngoingEvents();
+	}
+	
+	@Operation(summary = "To fetch the completed events", description = "This API will fetch all the completed events from the database table")
+	@ApiResponses({@ApiResponse(responseCode = "200", description = "Fetched all the completed events successfully"), @ApiResponse(responseCode = "400", description = "Could not fetch the completed events, it may not be present")})
+	@GetMapping("/completed")
+	public ResponseEntity<?> fetchCompletedEvents()
+	{
+		return eventService.fetchCompletedEvents();
 	}
 }

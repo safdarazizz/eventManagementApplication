@@ -16,4 +16,8 @@ public interface A_7EventService {
 	ResponseEntity<?> setStatusToUpcoming(int id);
 
 	ResponseEntity<?> fetchUpcomingEvents();
+
+	ResponseEntity<?> fetchOngoingEvents();
+
+	ResponseEntity<?> fetchCompletedEvents();
 }

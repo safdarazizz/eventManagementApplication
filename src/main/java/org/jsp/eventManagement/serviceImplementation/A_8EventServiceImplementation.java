@@ -9,6 +9,7 @@ import org.jsp.eventManagement.dao.A_9EventDao;
 import org.jsp.eventManagement.entity.A_2Event;
 import org.jsp.eventManagement.exceptionClasses.A_12NoEventFoundException;
 import org.jsp.eventManagement.exceptionClasses.A_14InvalidEventIdException;
+import org.jsp.eventManagement.exceptionClasses.A_15EventNotFoundException;
 import org.jsp.eventManagement.responseStructure.A_5ResponseStructure;
 import org.jsp.eventManagement.service.A_7EventService;
 import org.jsp.eventManagement.util.A_3EventStatus;
@@ -113,8 +114,42 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		}
 		
 		if(aList.isEmpty())
-			throw A_12NoEventFoundException.builder().message("No event present in the database table").build();
+			throw A_15EventNotFoundException.builder().message("No upcoming event present in the database table").build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(aList).build());
+	}
+
+	@Override
+	public ResponseEntity<?> fetchOngoingEvents() {
+		List<A_2Event> eventList = eventDao.fetchAllEvents();
+		ArrayList<A_2Event> aList = new ArrayList<>();
+		
+		for(A_2Event e : eventList)
+		{
+			if(e.getStatus().toString().equalsIgnoreCase("ON_GOING"))
+				aList.add(e);
+		}
+		
+		if(aList.isEmpty())
+			throw A_15EventNotFoundException.builder().message("No ongoing event present in the database table").build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Ongoing Events found Successfully").body(aList).build());
+	}
+
+	@Override
+	public ResponseEntity<?> fetchCompletedEvents() {
+		List<A_2Event> eventList = eventDao.fetchAllEvents();
+		ArrayList<A_2Event> aList = new ArrayList<>();
+		
+		for(A_2Event e : eventList)
+		{
+			if(e.getStatus().toString().equalsIgnoreCase("COMPLETED"))
+				aList.add(e);
+		}
+		
+		if(aList.isEmpty())
+			throw A_15EventNotFoundException.builder().message("No completed event present in the database table").build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Completed Events found Successfully").body(aList).build());
 	}
 }
