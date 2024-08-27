@@ -115,6 +115,6 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		if(aList.isEmpty())
 			throw A_12NoEventFoundException.builder().message("No event present in the database table").build();
 		
-		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(eventList).build());
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(aList).build());
 	}
 }
