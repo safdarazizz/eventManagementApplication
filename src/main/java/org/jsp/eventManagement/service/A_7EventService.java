@@ -7,4 +7,13 @@ public interface A_7EventService {
 
 	ResponseEntity<?> saveEvent(A_2Event event);
 
+	ResponseEntity<?> fetchAllEvents();
+
+	ResponseEntity<?> setStatusToOngoing(int id);
+
+	ResponseEntity<?> setStatusToCompleted(int id);
+
+	ResponseEntity<?> setStatusToUpcoming(int id);
+
+	ResponseEntity<?> fetchUpcomingEvents();
 }

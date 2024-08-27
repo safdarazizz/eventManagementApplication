@@ -1,9 +1,13 @@
 package org.jsp.eventManagement.serviceImplementation;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.jsp.eventManagement.dao.A_9EventDao;
 import org.jsp.eventManagement.entity.A_2Event;
+import org.jsp.eventManagement.exceptionClasses.A_12NoEventFoundException;
+import org.jsp.eventManagement.exceptionClasses.A_14InvalidEventIdException;
 import org.jsp.eventManagement.responseStructure.A_5ResponseStructure;
 import org.jsp.eventManagement.service.A_7EventService;
 import org.jsp.eventManagement.util.A_3EventStatus;
@@ -42,5 +46,67 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		A_2Event dbEvent  = eventDao.saveEvent(event);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("Event Saved Successfully").body(dbEvent).build());
+	}
+
+	@Override
+	public ResponseEntity<?> fetchAllEvents() {
+		List<A_2Event> eventList = eventDao.fetchAllEvents();
+		
+		if(eventList.isEmpty())
+			throw A_12NoEventFoundException.builder().message("No event present in the database table").build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Events found Successfully").body(eventList).build());
+	}
+
+	@Override
+	public ResponseEntity<?> setStatusToOngoing(int id) {
+		Optional<A_2Event> optional = eventDao.findEventById(id);
+		
+		if(optional.isEmpty())
+			throw A_14InvalidEventIdException.builder().message("Invalid Task ID").build();
+		
+		A_2Event event = optional.get();
+		event.setStatus(A_3EventStatus.ON_GOING);
+		A_2Event updatedEvent = eventDao.updateEvent(event);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("Event Status changed to ON_GOING successfully").body(updatedEvent).build());
+	}
+
+	@Override
+	public ResponseEntity<?> setStatusToCompleted(int id) {
+		Optional<A_2Event> optional = eventDao.findEventById(id);
+		
+		if(optional.isEmpty())
+			throw A_14InvalidEventIdException.builder().message("Invalid Task ID").build();
+		
+		A_2Event event = optional.get();
+		event.setStatus(A_3EventStatus.COMPLETED);
+		A_2Event updatedEvent = eventDao.updateEvent(event);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("Event Status changed to COMPLETED successfully").body(updatedEvent).build());
+	}
+
+	@Override
+	public ResponseEntity<?> setStatusToUpcoming(int id) {
+		Optional<A_2Event> optional = eventDao.findEventById(id);
+		
+		if(optional.isEmpty())
+			throw A_14InvalidEventIdException.builder().message("Invalid Task ID").build();
+		
+		A_2Event event = optional.get();
+		event.setStatus(A_3EventStatus.UP_COMING);
+		A_2Event updatedEvent = eventDao.updateEvent(event);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("Event Status changed to UP_COMING successfully").body(updatedEvent).build());
+	}
+
+	@Override
+	public ResponseEntity<?> fetchUpcomingEvents() {
+		List<A_2Event> eventList = eventDao.fetchUpcomingEvents();
+		
+		if(eventList.isEmpty())
+			throw A_12NoEventFoundException.builder().message("No event present in the database table").build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(eventList).build());
 	}
 }
