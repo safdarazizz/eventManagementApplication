@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.jsp.eventManagement.dao.A_9EventDao;
 import org.jsp.eventManagement.entity.A_2Event;
 import org.jsp.eventManagement.repository.A_4EventRepository;
+import org.jsp.eventManagement.util.A_3EventStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,10 @@ public class A_10EventDaoImpl implements A_9EventDao {
 	@Override
 	public A_2Event updateEvent(A_2Event event) {
 		return eventRepository.save(event);
+	}
+
+	@Override
+	public List<A_2Event> findEventByEventStatusAsUP_COMING() {
+		return eventRepository.findByStatus(A_3EventStatus.UP_COMING);
 	}
 }

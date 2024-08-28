@@ -14,4 +14,6 @@ public interface A_9EventDao {
 	Optional<A_2Event> findEventById(int id);
 
 	A_2Event updateEvent(A_2Event event);
+
+	List<A_2Event> findEventByEventStatusAsUP_COMING();
 }

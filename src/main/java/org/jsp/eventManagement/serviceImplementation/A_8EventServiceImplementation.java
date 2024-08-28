@@ -102,21 +102,29 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("Event Status changed to UP_COMING successfully").body(updatedEvent).build());
 	}
 
+//	@Override
+//	public ResponseEntity<?> fetchUpcomingEvents() { // First Way
+//		List<A_2Event> eventList = eventDao.fetchAllEvents();
+//		ArrayList<A_2Event> aList = new ArrayList<>();
+//		
+//		for(A_2Event e : eventList)
+//		{
+//			if(e.getStatus() == A_3EventStatus.UP_COMING) // First Way
+////		if(e.getStatus().toString().equalsIgnoreCase("UP_COMING")) // Second Way
+//				aList.add(e);
+//		}
+//		
+//		if(aList.isEmpty())
+//			throw A_15EventNotFoundException.builder().message("No upcoming event present in the database table").build();
+//		
+//		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(aList).build());
+//	}
+	
 	@Override
-	public ResponseEntity<?> fetchUpcomingEvents() {
-		List<A_2Event> eventList = eventDao.fetchAllEvents();
-		ArrayList<A_2Event> aList = new ArrayList<>();
-		
-		for(A_2Event e : eventList)
-		{
-			if(e.getStatus().toString().equalsIgnoreCase("UP_COMING"))
-				aList.add(e);
-		}
-		
-		if(aList.isEmpty())
-			throw A_15EventNotFoundException.builder().message("No upcoming event present in the database table").build();
-		
-		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(aList).build());
+	public ResponseEntity<?> fetchUpcomingEvents() { // Second Way // Instead of putting load on the Spring Boot Application, instead we can put the load on the database
+		List<A_2Event> events = eventDao.findEventByEventStatusAsUP_COMING();
+				
+		return ResponseEntity.status(HttpStatus.OK).body(A_5ResponseStructure.builder().status(HttpStatus.OK.value()).message("All Upcoming Events found Successfully").body(events).build());
 	}
 
 	@Override
@@ -126,7 +134,8 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		
 		for(A_2Event e : eventList)
 		{
-			if(e.getStatus().toString().equalsIgnoreCase("ON_GOING"))
+			if(e.getStatus() == A_3EventStatus.ON_GOING)
+//			if(e.getStatus().toString().equalsIgnoreCase("ON_GOING"))
 				aList.add(e);
 		}
 		
@@ -143,7 +152,8 @@ public class A_8EventServiceImplementation implements A_7EventService{
 		
 		for(A_2Event e : eventList)
 		{
-			if(e.getStatus().toString().equalsIgnoreCase("COMPLETED"))
+			if(e.getStatus() == A_3EventStatus.COMPLETED)
+//			if(e.getStatus().toString().equalsIgnoreCase("COMPLETED"))
 				aList.add(e);
 		}
 		

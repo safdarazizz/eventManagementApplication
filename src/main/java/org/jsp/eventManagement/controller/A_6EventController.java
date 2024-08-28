@@ -4,6 +4,7 @@ import org.jsp.eventManagement.entity.A_2Event;
 import org.jsp.eventManagement.service.A_7EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RestController
 //@RequestMapping(value = {"/events", "/e", "/eve"})
 @RequestMapping(value = "/events")
+@CrossOrigin(origins = "*")
 public class A_6EventController {
 	
 	@Autowired
